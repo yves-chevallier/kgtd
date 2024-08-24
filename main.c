@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
 #include "bullet.h"
 #include "controls.h"
 #include "globals.h"
@@ -12,9 +8,9 @@
 #include "state.h"
 #include "text.h"
 
-static void draw();
-static void update();
-static void reset();
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 static SDL_Surface *screen;
 
@@ -22,6 +18,20 @@ static int oldtime;
 static int need_draw;
 
 state_t kgtd_state;
+
+static void update(void) {
+    int newtime = SDL_GetTicks();
+    int idt = newtime - oldtime;
+    float dt = (float)idt / 1000.0;
+
+    noob_update_all(dt, idt, &kgtd_state);
+    bullet_update_all(dt, idt);
+    tower_update_all(idt);
+    controls_update(idt, &kgtd_state);
+    level_update(idt, &kgtd_state);
+
+    oldtime = newtime;
+}
 
 static void handle_event(SDL_Event *ev) {
     switch (ev->type) {
@@ -45,19 +55,7 @@ static Uint32 timer_cb(Uint32 x, void *p) {
     return x;
 }
 
-static void update(void) {
-    int newtime = SDL_GetTicks();
-    int idt = newtime - oldtime;
-    float dt = (float)idt / 1000.0;
 
-    noob_update_all(dt, idt, &kgtd_state);
-    bullet_update_all(dt, idt);
-    tower_update_all(idt);
-    controls_update(idt, &kgtd_state);
-    level_update(idt, &kgtd_state);
-
-    oldtime = newtime;
-}
 
 static void draw(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -81,7 +79,7 @@ static void reset(void) {
 }
 
 static void init(void) {
-    /* set up SDL */
+    // set up SDL
     screen = NULL;
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
         printf("Init failed: %s\n", SDL_GetError());
@@ -98,9 +96,7 @@ static void init(void) {
     SDL_WM_SetCaption("kgtd", "kgtd");
     atexit(SDL_Quit);
 
-    /* set up GL
-     * (0,0) is upper left
-     */
+    // set up GL (0,0) is upper left
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glTranslatef(-1.0, 1.0, 0.0);

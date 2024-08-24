@@ -6,7 +6,10 @@
 
 static int until_spawn;
 
+extern void link_levels_and_waves();
+
 void level_init(state_t *state) {
+    link_levels_and_waves();
     state->level = levels;
     state->wave = levels->waves;
     path_load(state, &state->level->map);
@@ -18,7 +21,6 @@ void level_update(int dt, state_t *state) {
     int next = state->until_next;
     wave_t *wave = state->wave;
     level_t *level = state->level;
-
     next = next > dt ? next - dt : 0;
 
     // do not advance wave until we are done spawning noobs
