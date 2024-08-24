@@ -1,5 +1,4 @@
-#ifndef _CONTROLS_H_
-#define _CONTROLS_H_
+#pragma once
 
 #include "globals.h"
 
@@ -19,6 +18,3 @@ void controls_init(void);
 void controls_draw(state_t *state);
 void controls_update(int dt, state_t *state);
 void controls_click(SDL_MouseButtonEvent *ev, state_t *state);
-
-#endif
-

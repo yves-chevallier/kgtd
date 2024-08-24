@@ -1,5 +1,4 @@
-#ifndef _DAMAGE_H_
-#define _DAMAGE_H_
+#pragma once
 
 #include "tower_types.h"
 #include "noob.h"
@@ -7,5 +6,3 @@
 
 void damage_calc(bullet_t *bullet, int dt);
 int damage_not_worthwhile(noob_t *noob, ttype_t type);
-
-#endif

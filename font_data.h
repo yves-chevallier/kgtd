@@ -1,4 +1,5 @@
 /* auto-generated - edit at your own risk */
+#pragma once
 
 #define FONT_HEIGHT 13
 #define FONT_WIDTH 6

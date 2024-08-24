@@ -1,8 +1,9 @@
-#include <assert.h>
 #include "noob.h"
 #include "state.h"
 #include "grid_objs.h"
 #include "damage.h"
+
+#include <assert.h>
 
 #define NOOBS_NUM_MAX 1024
 static noob_t noobs_pool[NOOBS_NUM_MAX];

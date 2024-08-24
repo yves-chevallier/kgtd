@@ -1,32 +1,21 @@
-KERN=$(shell uname -s)
+CC?=gcc
+CFLAGS=-std=c17 -O3 -Wall -Werror -pedantic -mfpmath=sse -msse -mmmx -ffast-math
+LDFLAGS=-lSDL -lGL -lm
+EXEC=main
+SRCS=$(wildcard *.c)
+OBJS=$(SRCS:.c=.o)
 
-CC=gcc
-CFLAGS=-g -O2 -mfpmath=sse -msse -mmmx -Wall -ffast-math
+all: $(EXEC)
 
-ALL_OBJS=tower.o bullet.o kgtd.o noob.o damage.o grid.o state.o controls.o \
-         tower_types.o path.o graphics.o level.o level_data.o text.o
+-include $(OBJS:.o=.d)
 
-ifeq ($(strip $(KERN)),Darwin)
-ARCH_OBJS=SDLMain_osx.o 
-LIBS=-framework OpenGL -framework SDL -framework Cocoa
-else
-ifeq ($(strip $(KERN)),Linux)
-ARCH_OBJS=
-LIBS=-lSDL -lGL -lm
-else
-$(error "I couldn't figure out your architecture; that means I hate you")
-endif
-endif
+$(EXEC): $(OBJS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
-all: kgtd
+%.o: %.c
+	$(CC) -o $@ -c $< $(CFLAGS) -MMD -MP
 
 clean:
-	rm -f kgtd *.o *~
+	$(RM) -f $(OBJS) $(EXEC) $(OBJS:.o=.d)
 
-depend:
-	$(CC) -MM *.c > .depend
-	
-kgtd: $(ALL_OBJS) $(ARCH_OBJS)
-	$(CC) -o kgtd $(ALL_OBJS) $(ARCH_OBJS) $(LIBS)
-
--include .depend
+.PHONY: all clean

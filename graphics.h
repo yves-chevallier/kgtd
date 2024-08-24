@@ -1,6 +1,3 @@
-#ifndef GRAPHICS_H
-#define GRAPHICS_H
+#pragma once
 
 void graphics_init(void);
-
-#endif
