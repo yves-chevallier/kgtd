@@ -2,7 +2,7 @@ CC?=gcc
 CFLAGS=-std=c17 -O3 -Wall -Werror -pedantic -mfpmath=sse -msse -mmmx -ffast-math
 LDFLAGS=-lSDL -lGL -lm
 EXEC=main
-SRCS=$(wildcard *.c)
+SRCS=$(wildcard src/*.c)
 OBJS=$(SRCS:.c=.o)
 
 all: $(EXEC)
@@ -18,4 +18,7 @@ $(EXEC): $(OBJS)
 clean:
 	$(RM) -f $(OBJS) $(EXEC) $(OBJS:.o=.d)
 
-.PHONY: all clean
+mrproper: clean
+	$(RM) -f $(EXEC)
+
+.PHONY: all clean mrproper
